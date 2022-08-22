@@ -1,0 +1,122 @@
+﻿@model IEnumerable<Zadatak.Models.TravelOrderDriverVehicle>
+
+@{
+    ViewBag.Title = "PregledPutnihNaloga";
+}
+
+<h2>Pregled putnih naloga</h2>
+
+<p>
+    @Html.ActionLink("Nazad na meni", "Meni", "Home");
+</p>
+
+<table class="table">
+    <tr>
+        @*<th>
+            @Html.DisplayNameFor(model => model.IDTravelOrder)
+        </th>*@
+        @*<th>
+            @Html.DisplayNameFor(model => model.DriverID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VehicleID)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.StartPlace)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Destination)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateEnd)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NameOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Surname)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.MobilePhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DriversLicenseNumber)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.TypeVehicle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarkVehicle)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.YearProduction)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.InitialMomentOfKM)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.IDTravelOrder)
+        </td>*@
+        @*<td>
+            @Html.DisplayFor(modelItem => item.DriverID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.VehicleID)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.StartPlace)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Destination)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateEnd)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NameOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Surname)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.MobilePhone)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DriversLicenseNumber)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeVehicle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MarkVehicle)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.YearProduction)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.InitialMomentOfKM)
+        </td>
+        <td>
+            @Html.ActionLink("Uredi", "UrediNalog", new { id=item.IDTravelOrder }) |@Html.ActionLink("Obriši", "ObrisiNalog", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

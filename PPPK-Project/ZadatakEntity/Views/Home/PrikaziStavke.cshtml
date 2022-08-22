@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ZadatakEntity.Stavka>
+
+@{
+    ViewBag.Title = "PrikaziStavke";
+}
+
+<h2>Prikaži stavke</h2>
+
+<p>
+    @Html.ActionLink("Nazad na meni", "MeniOptions", "Home");
+</p>
+
+<p>
+    @Html.ActionLink("Nazad na prikaz servisa", "PrikaziServise", "Home");
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IDStavka)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VehicleID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ServiceVehicleID)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDStavka)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VehicleID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceVehicleID)
+            </td>
+            <td>
+                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+            </td>
+        </tr>
+    }
+
+</table>

@@ -1,0 +1,111 @@
+﻿@model Zadatak.Models.TravelOrderDriverVehicle
+@using Zadatak.Models
+@{
+    ViewBag.Title = "UnosNaloga";
+
+    //var names = ViewBag.names as List<Driver>;
+    //var types = ViewBag.types as List<TypeOrder>;
+    //var typesVehicle = ViewBag.typesVehicle as List<Vehicle>;
+}
+
+<h2>Unos naloga</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+<div class="form-horizontal">
+    <h4>TravelOrderDriverVehicle</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.IDTravelOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.IDTravelOrder, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.IDTravelOrder, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Driver.IDDriver, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Driver.IDDriver, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.DropDownList(
+                   name: "IDDriver",
+                   selectList: new SelectList(items: names, dataTextField: "Name", dataValueField: "IDDriver"),
+                   htmlAttributes: new { @class = "form-control" }
+              )*@
+            @Html.ValidationMessageFor(model => model.Driver.IDDriver, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Vehicle.IDVehicle, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Vehicle.IDVehicle, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.DropDownList(
+                  name: "IDVehicle",
+                  selectList: new SelectList(items: typesVehicle, dataTextField: "TypeVehicle", dataValueField: "IDVehicle"),
+                  htmlAttributes: new { @class = "form-control" }
+             )*@
+            @Html.ValidationMessageFor(model => model.Vehicle.IDVehicle, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.StartPlace, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.StartPlace, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.StartPlace, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Destination, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Destination, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Destination, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DateStart, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DateStart, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DateStart, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.DateEnd, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.DateEnd, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.DateEnd, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Order.IDTypeTravelOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Order.IDTypeTravelOrder, new { htmlAttributes = new { @class = "form-control" } })
+            @*@Html.DropDownList(
+                    name: "IDTypeTravelOrder",
+                    selectList: new SelectList(items: types, dataTextField: "Name", dataValueField: "IDTypeTravelOrder"),
+                    htmlAttributes: new { @class = "form-control" }
+               )*@
+            @Html.ValidationMessageFor(model => model.Order.IDTypeTravelOrder, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

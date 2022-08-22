@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e78a9d50d7ca4d50892743d4289dcc02" Name="Diagram1">
+        <EntityTypeShape EntityType="VehicleManagementModel.Driver" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VehicleManagementModel.ServiceVehicle" Width="1.5" PointX="3" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="VehicleManagementModel.Stavka" Width="1.5" PointX="5.25" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="VehicleManagementModel.TravelOrder" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="VehicleManagementModel.TypeTravelOrder" Width="1.5" PointX="0.75" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="VehicleManagementModel.Vehicle" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="VehicleManagementModel.FK_TravelOrder_Driver" ManuallyRouted="false" />
+        <AssociationConnector Association="VehicleManagementModel.FK_ServiceVehicle_Vehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="VehicleManagementModel.FK_Stavka_ServiceVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="VehicleManagementModel.FK_Stavka_Vehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="VehicleManagementModel.FK_TravelOrder_TypeTravelOrder" ManuallyRouted="false" />
+        <AssociationConnector Association="VehicleManagementModel.FK_TravelOrder_Vehicle" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

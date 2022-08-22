@@ -1,0 +1,57 @@
+﻿@model IEnumerable<ZadatakEntity.Vehicle>
+
+@{
+    ViewBag.Title = "PrikaziVozila";
+}
+
+<h2>Prikaz vozila</h2>
+
+<p>
+    @Html.ActionLink("Nazad na meni", "MeniOptions", "Home");
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IDVehicle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeVehicle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MarkVehicle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.YearProduction)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.InitialMomentOfKM)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDVehicle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TypeVehicle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MarkVehicle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.YearProduction)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.InitialMomentOfKM)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "UrediVozilo", new { id=item.IDVehicle }) |
+            @Html.ActionLink("Delete", "ObrisiVozilo", new {  id=item.IDVehicle }) | 
+            @Html.ActionLink("Show services", "PrikaziServise", new { id = item.IDVehicle})
+        </td>
+    </tr>
+}
+
+</table>

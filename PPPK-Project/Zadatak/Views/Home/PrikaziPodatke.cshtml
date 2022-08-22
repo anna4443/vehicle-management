@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Zadatak.Models.TravelOrderDriverVehicle>
+
+@{
+    ViewBag.Title = "PrikaziPodatke";
+}
+
+<h2>Prikaži podatke</h2>
+
+<p>
+    @Html.ActionLink("Nazad na meni", "Meni", "Home");
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IDTravelOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Driver.IDDriver)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Vehicle.IDVehicle)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.StartPlace)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Destination)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateStart)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateEnd)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.IDTravelOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Driver.IDDriver)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Vehicle.IDVehicle)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StartPlace)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Destination)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateStart)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DateEnd)
+        </td>
+        <td>
+            @Html.ActionLink("Uredi", "UrediNalog", new { id = item.IDTravelOrder }) |
+            @Html.ActionLink("Obriši", "ObrisiNalog", new { id = item.IDTravelOrder })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Meni";
+}
+
+<h2>Meni</h2>
+
+<div id="container">
+
+    <nav>
+        <ul>
+            <li>
+                @Html.ActionLink("Unesi vozača", "UnosVozaca", "Home");
+            </li>
+            <li>
+                @Html.ActionLink("Unesi vozilo", "UnosVozila", "Home");
+            </li>
+            <li>
+                @Html.ActionLink("Unesi nalog", "UnosNaloga", "Home");
+            </li>
+            <li>
+                @Html.ActionLink("Pregled vozača", "PregledVozaca", "Home");
+            </li>
+            <li>
+                @Html.ActionLink("Pregled vozila", "PregledVozila", "Home");
+            </li>
+            <li>
+                @Html.ActionLink("Pregled putnih naloga", "PregledPutnihNaloga2", "Home");
+            </li>
+            <li>
+                @Html.ActionLink("Prikaži podatke", "PrikaziPodatke", "Home");
+            </li>
+            <li>
+                @Html.ActionLink("Prikaži putne naloge", "PrikaziPutneNaloge", "Home");
+            </li>
+            <li>
+                @Html.ActionLink("Iščitaj putne naloge", "IscitajNaloge", "Home");
+            </li>
+        </ul>
+    </nav>
+
+</div>

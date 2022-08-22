@@ -1,0 +1,885 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="VehicleManagementModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="IDDriver" />
+          </Key>
+          <Property Name="IDDriver" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="MobilePhone" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DriversLicenseNumber" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ServiceVehicle">
+          <Key>
+            <PropertyRef Name="IDServiceVehicle" />
+          </Key>
+          <Property Name="IDServiceVehicle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" />
+          <Property Name="ChangeTire" Type="nvarchar" MaxLength="10" />
+          <Property Name="ChangeBelt" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Stavka">
+          <Key>
+            <PropertyRef Name="IDStavka" />
+          </Key>
+          <Property Name="IDStavka" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VehicleID" Type="int" />
+          <Property Name="ServiceVehicleID" Type="int" />
+        </EntityType>
+        <EntityType Name="TravelOrder">
+          <Key>
+            <PropertyRef Name="IDTravelOrder" />
+          </Key>
+          <Property Name="IDTravelOrder" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DriverID" Type="int" />
+          <Property Name="VehicleID" Type="int" />
+          <Property Name="StartPlace" Type="nvarchar(max)" />
+          <Property Name="Destination" Type="nvarchar(max)" />
+          <Property Name="DateStart" Type="date" />
+          <Property Name="DateEnd" Type="date" />
+          <Property Name="TypeOrderID" Type="int" />
+        </EntityType>
+        <EntityType Name="TypeTravelOrder">
+          <Key>
+            <PropertyRef Name="IDTypeTravelOrder" />
+          </Key>
+          <Property Name="IDTypeTravelOrder" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vehicle">
+          <Key>
+            <PropertyRef Name="IDVehicle" />
+          </Key>
+          <Property Name="IDVehicle" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TypeVehicle" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="MarkVehicle" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="YearProduction" Type="int" Nullable="false" />
+          <Property Name="InitialMomentOfKM" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ServiceVehicle_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+          <End Role="ServiceVehicle" Type="Self.ServiceVehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="IDVehicle" />
+            </Principal>
+            <Dependent Role="ServiceVehicle">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stavka_ServiceVehicle">
+          <End Role="ServiceVehicle" Type="Self.ServiceVehicle" Multiplicity="0..1" />
+          <End Role="Stavka" Type="Self.Stavka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceVehicle">
+              <PropertyRef Name="IDServiceVehicle" />
+            </Principal>
+            <Dependent Role="Stavka">
+              <PropertyRef Name="ServiceVehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stavka_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+          <End Role="Stavka" Type="Self.Stavka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="IDVehicle" />
+            </Principal>
+            <Dependent Role="Stavka">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelOrder_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="TravelOrder" Type="Self.TravelOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="IDDriver" />
+            </Principal>
+            <Dependent Role="TravelOrder">
+              <PropertyRef Name="DriverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelOrder_TypeTravelOrder">
+          <End Role="TypeTravelOrder" Type="Self.TypeTravelOrder" Multiplicity="0..1" />
+          <End Role="TravelOrder" Type="Self.TravelOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeTravelOrder">
+              <PropertyRef Name="IDTypeTravelOrder" />
+            </Principal>
+            <Dependent Role="TravelOrder">
+              <PropertyRef Name="TypeOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelOrder_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+          <End Role="TravelOrder" Type="Self.TravelOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="IDVehicle" />
+            </Principal>
+            <Dependent Role="TravelOrder">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DeleteDriver" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DriverAjdi" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteServicesVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AjdiServicesVehicle" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteTravelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TravelOrderAjdi" Type="int" Mode="In" />
+        </Function>
+        <Function Name="DeleteVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VehicleAjdi" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetDetailsTravelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetDriver" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="driverID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetDrivers" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetService" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="serviceID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetServiceForVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vehicleID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetServicesVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetStavka" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vehicleID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetTravelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AjdiOrder" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetTravelOrders" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetTypes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="vehicleID" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetVehicles" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="InsertDriver" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NameDriver" Type="nvarchar" Mode="In" />
+          <Parameter Name="SurnameDriver" Type="nvarchar" Mode="In" />
+          <Parameter Name="MobilePhoneDriver" Type="nvarchar" Mode="In" />
+          <Parameter Name="DriverLicense" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="InsertServiceVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VehicleAjdi" Type="int" Mode="In" />
+          <Parameter Name="ChangeTire" Type="nvarchar" Mode="In" />
+          <Parameter Name="ChangeBelt" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="InsertTravelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DriverAjdi" Type="int" Mode="In" />
+          <Parameter Name="VehicleAjdi" Type="int" Mode="In" />
+          <Parameter Name="StartPl" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Dest" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="DejtStart" Type="date" Mode="In" />
+          <Parameter Name="DejtEnd" Type="date" Mode="In" />
+          <Parameter Name="TajpOrder" Type="int" Mode="In" />
+        </Function>
+        <Function Name="InsertVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TajpVehicle" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="MarkVeh" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="YearProd" Type="int" Mode="In" />
+          <Parameter Name="NumbKM" Type="int" Mode="In" />
+        </Function>
+        <Function Name="UpdateDriver" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AjdiDriver" Type="int" Mode="In" />
+          <Parameter Name="NameDriver" Type="nvarchar" Mode="In" />
+          <Parameter Name="SurnameDriver" Type="nvarchar" Mode="In" />
+          <Parameter Name="MobilePhoneDriver" Type="nvarchar" Mode="In" />
+          <Parameter Name="DriverLicense" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="UpdateServicesVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AjdiServicesVehicle" Type="int" Mode="In" />
+          <Parameter Name="VehicleAjdi" Type="int" Mode="In" />
+          <Parameter Name="ChangeTire" Type="nvarchar" Mode="In" />
+          <Parameter Name="ChangeBelt" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateTravelOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AjdiTravelOrder" Type="int" Mode="In" />
+          <Parameter Name="DriverAjdi" Type="int" Mode="In" />
+          <Parameter Name="VehicleAjdi" Type="int" Mode="In" />
+          <Parameter Name="StartPl" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="Dest" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="DejtStart" Type="date" Mode="In" />
+          <Parameter Name="DejtEnd" Type="date" Mode="In" />
+          <Parameter Name="TajpOrder" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="UpdateVehicle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AjdiVehicle" Type="int" Mode="In" />
+          <Parameter Name="TajpVehicle" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="MarkVeh" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="YearProd" Type="int" Mode="In" />
+          <Parameter Name="NumbKM" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="VehicleManagementModelStoreContainer">
+          <EntitySet Name="Driver" EntityType="Self.Driver" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServiceVehicle" EntityType="Self.ServiceVehicle" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Stavka" EntityType="Self.Stavka" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TravelOrder" EntityType="Self.TravelOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TypeTravelOrder" EntityType="Self.TypeTravelOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ServiceVehicle_Vehicle" Association="Self.FK_ServiceVehicle_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="ServiceVehicle" EntitySet="ServiceVehicle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stavka_ServiceVehicle" Association="Self.FK_Stavka_ServiceVehicle">
+            <End Role="ServiceVehicle" EntitySet="ServiceVehicle" />
+            <End Role="Stavka" EntitySet="Stavka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stavka_Vehicle" Association="Self.FK_Stavka_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="Stavka" EntitySet="Stavka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelOrder_Driver" Association="Self.FK_TravelOrder_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="TravelOrder" EntitySet="TravelOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelOrder_TypeTravelOrder" Association="Self.FK_TravelOrder_TypeTravelOrder">
+            <End Role="TypeTravelOrder" EntitySet="TypeTravelOrder" />
+            <End Role="TravelOrder" EntitySet="TravelOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelOrder_Vehicle" Association="Self.FK_TravelOrder_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="TravelOrder" EntitySet="TravelOrder" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="VehicleManagementModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Driver">
+          <Key>
+            <PropertyRef Name="IDDriver" />
+          </Key>
+          <Property Name="IDDriver" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MobilePhone" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DriversLicenseNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TravelOrder" Relationship="Self.FK_TravelOrder_Driver" FromRole="Driver" ToRole="TravelOrder" />
+        </EntityType>
+        <EntityType Name="ServiceVehicle">
+          <Key>
+            <PropertyRef Name="IDServiceVehicle" />
+          </Key>
+          <Property Name="IDServiceVehicle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" />
+          <Property Name="ChangeTire" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ChangeBelt" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_ServiceVehicle_Vehicle" FromRole="ServiceVehicle" ToRole="Vehicle" />
+          <NavigationProperty Name="Stavka" Relationship="Self.FK_Stavka_ServiceVehicle" FromRole="ServiceVehicle" ToRole="Stavka" />
+        </EntityType>
+        <EntityType Name="Stavka">
+          <Key>
+            <PropertyRef Name="IDStavka" />
+          </Key>
+          <Property Name="IDStavka" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VehicleID" Type="Int32" />
+          <Property Name="ServiceVehicleID" Type="Int32" />
+          <NavigationProperty Name="ServiceVehicle" Relationship="Self.FK_Stavka_ServiceVehicle" FromRole="Stavka" ToRole="ServiceVehicle" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_Stavka_Vehicle" FromRole="Stavka" ToRole="Vehicle" />
+        </EntityType>
+        <EntityType Name="TravelOrder">
+          <Key>
+            <PropertyRef Name="IDTravelOrder" />
+          </Key>
+          <Property Name="IDTravelOrder" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DriverID" Type="Int32" />
+          <Property Name="VehicleID" Type="Int32" />
+          <Property Name="StartPlace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Destination" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DateStart" Type="DateTime" Precision="0" />
+          <Property Name="DateEnd" Type="DateTime" Precision="0" />
+          <Property Name="TypeOrderID" Type="Int32" />
+          <NavigationProperty Name="Driver" Relationship="Self.FK_TravelOrder_Driver" FromRole="TravelOrder" ToRole="Driver" />
+          <NavigationProperty Name="TypeTravelOrder" Relationship="Self.FK_TravelOrder_TypeTravelOrder" FromRole="TravelOrder" ToRole="TypeTravelOrder" />
+          <NavigationProperty Name="Vehicle" Relationship="Self.FK_TravelOrder_Vehicle" FromRole="TravelOrder" ToRole="Vehicle" />
+        </EntityType>
+        <EntityType Name="TypeTravelOrder">
+          <Key>
+            <PropertyRef Name="IDTypeTravelOrder" />
+          </Key>
+          <Property Name="IDTypeTravelOrder" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TravelOrder" Relationship="Self.FK_TravelOrder_TypeTravelOrder" FromRole="TypeTravelOrder" ToRole="TravelOrder" />
+        </EntityType>
+        <EntityType Name="Vehicle">
+          <Key>
+            <PropertyRef Name="IDVehicle" />
+          </Key>
+          <Property Name="IDVehicle" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TypeVehicle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MarkVehicle" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="YearProduction" Type="Int32" Nullable="false" />
+          <Property Name="InitialMomentOfKM" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ServiceVehicle" Relationship="Self.FK_ServiceVehicle_Vehicle" FromRole="Vehicle" ToRole="ServiceVehicle" />
+          <NavigationProperty Name="Stavka" Relationship="Self.FK_Stavka_Vehicle" FromRole="Vehicle" ToRole="Stavka" />
+          <NavigationProperty Name="TravelOrder" Relationship="Self.FK_TravelOrder_Vehicle" FromRole="Vehicle" ToRole="TravelOrder" />
+        </EntityType>
+        <Association Name="FK_TravelOrder_Driver">
+          <End Role="Driver" Type="Self.Driver" Multiplicity="0..1" />
+          <End Role="TravelOrder" Type="Self.TravelOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Driver">
+              <PropertyRef Name="IDDriver" />
+            </Principal>
+            <Dependent Role="TravelOrder">
+              <PropertyRef Name="DriverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ServiceVehicle_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+          <End Role="ServiceVehicle" Type="Self.ServiceVehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="IDVehicle" />
+            </Principal>
+            <Dependent Role="ServiceVehicle">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stavka_ServiceVehicle">
+          <End Role="ServiceVehicle" Type="Self.ServiceVehicle" Multiplicity="0..1" />
+          <End Role="Stavka" Type="Self.Stavka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServiceVehicle">
+              <PropertyRef Name="IDServiceVehicle" />
+            </Principal>
+            <Dependent Role="Stavka">
+              <PropertyRef Name="ServiceVehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stavka_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+          <End Role="Stavka" Type="Self.Stavka" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="IDVehicle" />
+            </Principal>
+            <Dependent Role="Stavka">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelOrder_TypeTravelOrder">
+          <End Role="TypeTravelOrder" Type="Self.TypeTravelOrder" Multiplicity="0..1" />
+          <End Role="TravelOrder" Type="Self.TravelOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TypeTravelOrder">
+              <PropertyRef Name="IDTypeTravelOrder" />
+            </Principal>
+            <Dependent Role="TravelOrder">
+              <PropertyRef Name="TypeOrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TravelOrder_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+          <End Role="TravelOrder" Type="Self.TravelOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="IDVehicle" />
+            </Principal>
+            <Dependent Role="TravelOrder">
+              <PropertyRef Name="VehicleID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="VehicleManagementEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Driver" EntityType="Self.Driver" />
+          <EntitySet Name="ServiceVehicle" EntityType="Self.ServiceVehicle" />
+          <EntitySet Name="Stavka" EntityType="Self.Stavka" />
+          <EntitySet Name="TravelOrder" EntityType="Self.TravelOrder" />
+          <EntitySet Name="TypeTravelOrder" EntityType="Self.TypeTravelOrder" />
+          <EntitySet Name="Vehicle" EntityType="Self.Vehicle" />
+          <AssociationSet Name="FK_TravelOrder_Driver" Association="Self.FK_TravelOrder_Driver">
+            <End Role="Driver" EntitySet="Driver" />
+            <End Role="TravelOrder" EntitySet="TravelOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ServiceVehicle_Vehicle" Association="Self.FK_ServiceVehicle_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="ServiceVehicle" EntitySet="ServiceVehicle" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stavka_ServiceVehicle" Association="Self.FK_Stavka_ServiceVehicle">
+            <End Role="ServiceVehicle" EntitySet="ServiceVehicle" />
+            <End Role="Stavka" EntitySet="Stavka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stavka_Vehicle" Association="Self.FK_Stavka_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="Stavka" EntitySet="Stavka" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelOrder_TypeTravelOrder" Association="Self.FK_TravelOrder_TypeTravelOrder">
+            <End Role="TypeTravelOrder" EntitySet="TypeTravelOrder" />
+            <End Role="TravelOrder" EntitySet="TravelOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TravelOrder_Vehicle" Association="Self.FK_TravelOrder_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="TravelOrder" EntitySet="TravelOrder" />
+          </AssociationSet>
+          <FunctionImport Name="DeleteDriver">
+            <Parameter Name="DriverAjdi" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteServicesVehicle">
+            <Parameter Name="AjdiServicesVehicle" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteTravelOrder">
+            <Parameter Name="TravelOrderAjdi" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteVehicle">
+            <Parameter Name="VehicleAjdi" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetDetailsTravelOrder" ReturnType="Collection(VehicleManagementModel.GetDetailsTravelOrder_Result)" />
+          <FunctionImport Name="GetDriver" ReturnType="Collection(VehicleManagementModel.GetDriver_Result)">
+            <Parameter Name="driverID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetDrivers" ReturnType="Collection(VehicleManagementModel.GetDrivers_Result)" />
+          <FunctionImport Name="GetService" ReturnType="Collection(VehicleManagementModel.GetService_Result)">
+            <Parameter Name="serviceID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetServiceForVehicle" ReturnType="Collection(VehicleManagementModel.GetServiceForVehicle_Result)">
+            <Parameter Name="vehicleID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetServicesVehicle" ReturnType="Collection(VehicleManagementModel.GetServicesVehicle_Result)" />
+          <FunctionImport Name="GetStavka" ReturnType="Collection(VehicleManagementModel.GetStavka_Result)">
+            <Parameter Name="vehicleID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetTravelOrder" ReturnType="Collection(VehicleManagementModel.GetTravelOrder_Result)">
+            <Parameter Name="AjdiOrder" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetTravelOrders" ReturnType="Collection(VehicleManagementModel.GetTravelOrders_Result)" />
+          <FunctionImport Name="GetTypes" ReturnType="Collection(VehicleManagementModel.GetTypes_Result)" />
+          <FunctionImport Name="GetVehicle" ReturnType="Collection(VehicleManagementModel.GetVehicle_Result)">
+            <Parameter Name="vehicleID" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetVehicles" ReturnType="Collection(VehicleManagementModel.GetVehicles_Result)" />
+          <FunctionImport Name="InsertDriver">
+            <Parameter Name="NameDriver" Mode="In" Type="String" />
+            <Parameter Name="SurnameDriver" Mode="In" Type="String" />
+            <Parameter Name="MobilePhoneDriver" Mode="In" Type="String" />
+            <Parameter Name="DriverLicense" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="InsertServiceVehicle">
+            <Parameter Name="VehicleAjdi" Mode="In" Type="Int32" />
+            <Parameter Name="ChangeTire" Mode="In" Type="String" />
+            <Parameter Name="ChangeBelt" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="InsertTravelOrder">
+            <Parameter Name="DriverAjdi" Mode="In" Type="Int32" />
+            <Parameter Name="VehicleAjdi" Mode="In" Type="Int32" />
+            <Parameter Name="StartPl" Mode="In" Type="String" />
+            <Parameter Name="Dest" Mode="In" Type="String" />
+            <Parameter Name="DejtStart" Mode="In" Type="DateTime" />
+            <Parameter Name="DejtEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="TajpOrder" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="InsertVehicle">
+            <Parameter Name="TajpVehicle" Mode="In" Type="String" />
+            <Parameter Name="MarkVeh" Mode="In" Type="String" />
+            <Parameter Name="YearProd" Mode="In" Type="Int32" />
+            <Parameter Name="NumbKM" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateDriver">
+            <Parameter Name="AjdiDriver" Mode="In" Type="Int32" />
+            <Parameter Name="NameDriver" Mode="In" Type="String" />
+            <Parameter Name="SurnameDriver" Mode="In" Type="String" />
+            <Parameter Name="MobilePhoneDriver" Mode="In" Type="String" />
+            <Parameter Name="DriverLicense" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateServicesVehicle">
+            <Parameter Name="AjdiServicesVehicle" Mode="In" Type="Int32" />
+            <Parameter Name="VehicleAjdi" Mode="In" Type="Int32" />
+            <Parameter Name="ChangeTire" Mode="In" Type="String" />
+            <Parameter Name="ChangeBelt" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateTravelOrder">
+            <Parameter Name="AjdiTravelOrder" Mode="In" Type="Int32" />
+            <Parameter Name="DriverAjdi" Mode="In" Type="Int32" />
+            <Parameter Name="VehicleAjdi" Mode="In" Type="Int32" />
+            <Parameter Name="StartPl" Mode="In" Type="String" />
+            <Parameter Name="Dest" Mode="In" Type="String" />
+            <Parameter Name="DejtStart" Mode="In" Type="DateTime" />
+            <Parameter Name="DejtEnd" Mode="In" Type="DateTime" />
+            <Parameter Name="TajpOrder" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="UpdateVehicle">
+            <Parameter Name="AjdiVehicle" Mode="In" Type="Int32" />
+            <Parameter Name="TajpVehicle" Mode="In" Type="String" />
+            <Parameter Name="MarkVeh" Mode="In" Type="String" />
+            <Parameter Name="YearProd" Mode="In" Type="Int32" />
+            <Parameter Name="NumbKM" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetDetailsTravelOrder_Result">
+          <Property Type="Int32" Name="IDTravelOrder" Nullable="false" />
+          <Property Type="Int32" Name="DriverID" Nullable="true" />
+          <Property Type="Int32" Name="VehicleID" Nullable="true" />
+          <Property Type="String" Name="StartPlace" Nullable="true" />
+          <Property Type="String" Name="Destination" Nullable="true" />
+          <Property Type="DateTime" Name="DateStart" Nullable="true" />
+          <Property Type="DateTime" Name="DateEnd" Nullable="true" />
+          <Property Type="String" Name="NameOrder" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Surname" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="MobilePhone" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DriversLicenseNumber" Nullable="false" />
+          <Property Type="String" Name="TypeVehicle" Nullable="false" />
+          <Property Type="String" Name="MarkVehicle" Nullable="false" />
+          <Property Type="Int32" Name="YearProduction" Nullable="false" />
+          <Property Type="Int32" Name="InitialMomentOfKM" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetDriver_Result">
+          <Property Type="Int32" Name="IDDriver" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Surname" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="MobilePhone" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DriversLicenseNumber" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetDrivers_Result">
+          <Property Type="Int32" Name="IDDriver" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Surname" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="MobilePhone" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DriversLicenseNumber" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetService_Result">
+          <Property Type="Int32" Name="IDServiceVehicle" Nullable="false" />
+          <Property Type="Int32" Name="VehicleID" Nullable="true" />
+          <Property Type="String" Name="ChangeTire" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ChangeBelt" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="GetServiceForVehicle_Result">
+          <Property Type="Int32" Name="IDServiceVehicle" Nullable="false" />
+          <Property Type="String" Name="MarkVehicle" Nullable="false" />
+          <Property Type="String" Name="TypeVehicle" Nullable="false" />
+          <Property Type="String" Name="ChangeTire" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ChangeBelt" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="GetServicesVehicle_Result">
+          <Property Type="Int32" Name="IDServiceVehicle" Nullable="false" />
+          <Property Type="Int32" Name="VehicleID" Nullable="true" />
+          <Property Type="String" Name="MarkVehicle" Nullable="false" />
+          <Property Type="String" Name="TypeVehicle" Nullable="false" />
+          <Property Type="String" Name="ChangeTire" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ChangeBelt" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="GetStavka_Result">
+          <Property Type="Int32" Name="IDStavka" Nullable="false" />
+          <Property Type="Int32" Name="VehicleID" Nullable="true" />
+          <Property Type="String" Name="MarkVehicle" Nullable="false" />
+          <Property Type="String" Name="TypeVehicle" Nullable="false" />
+          <Property Type="Int32" Name="IDServiceVehicle" Nullable="false" />
+          <Property Type="String" Name="ChangeTire" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ChangeBelt" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="GetTravelOrder_Result">
+          <Property Type="Int32" Name="IDTravelOrder" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="Surname" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="TypeVehicle" Nullable="false" />
+          <Property Type="String" Name="StartPlace" Nullable="true" />
+          <Property Type="String" Name="Destination" Nullable="true" />
+          <Property Type="DateTime" Name="DateStart" Nullable="true" />
+          <Property Type="DateTime" Name="DateEnd" Nullable="true" />
+          <Property Type="String" Name="Name_type" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GetTravelOrders_Result">
+          <Property Type="Int32" Name="IDTravelOrder" Nullable="false" />
+          <Property Type="Int32" Name="DriverID" Nullable="true" />
+          <Property Type="Int32" Name="VehicleID" Nullable="true" />
+          <Property Type="String" Name="StartPlace" Nullable="true" />
+          <Property Type="String" Name="Destination" Nullable="true" />
+          <Property Type="DateTime" Name="DateStart" Nullable="true" />
+          <Property Type="DateTime" Name="DateEnd" Nullable="true" />
+          <Property Type="Int32" Name="TypeOrderID" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetTypes_Result">
+          <Property Type="Int32" Name="IDTypeTravelOrder" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="GetVehicle_Result">
+          <Property Type="Int32" Name="IDVehicle" Nullable="false" />
+          <Property Type="String" Name="TypeVehicle" Nullable="false" />
+          <Property Type="String" Name="MarkVehicle" Nullable="false" />
+          <Property Type="Int32" Name="YearProduction" Nullable="false" />
+          <Property Type="Int32" Name="InitialMomentOfKM" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetVehicles_Result">
+          <Property Type="Int32" Name="IDVehicle" Nullable="false" />
+          <Property Type="String" Name="TypeVehicle" Nullable="false" />
+          <Property Type="String" Name="MarkVehicle" Nullable="false" />
+          <Property Type="Int32" Name="YearProduction" Nullable="false" />
+          <Property Type="Int32" Name="InitialMomentOfKM" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="VehicleManagementModelStoreContainer" CdmEntityContainer="VehicleManagementEntities1">
+          <EntitySetMapping Name="Driver">
+            <EntityTypeMapping TypeName="VehicleManagementModel.Driver">
+              <MappingFragment StoreEntitySet="Driver">
+                <ScalarProperty Name="IDDriver" ColumnName="IDDriver" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="DriversLicenseNumber" ColumnName="DriversLicenseNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceVehicle">
+            <EntityTypeMapping TypeName="VehicleManagementModel.ServiceVehicle">
+              <MappingFragment StoreEntitySet="ServiceVehicle">
+                <ScalarProperty Name="IDServiceVehicle" ColumnName="IDServiceVehicle" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="ChangeTire" ColumnName="ChangeTire" />
+                <ScalarProperty Name="ChangeBelt" ColumnName="ChangeBelt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stavka">
+            <EntityTypeMapping TypeName="VehicleManagementModel.Stavka">
+              <MappingFragment StoreEntitySet="Stavka">
+                <ScalarProperty Name="IDStavka" ColumnName="IDStavka" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="ServiceVehicleID" ColumnName="ServiceVehicleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TravelOrder">
+            <EntityTypeMapping TypeName="VehicleManagementModel.TravelOrder">
+              <MappingFragment StoreEntitySet="TravelOrder">
+                <ScalarProperty Name="IDTravelOrder" ColumnName="IDTravelOrder" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="StartPlace" ColumnName="StartPlace" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="TypeOrderID" ColumnName="TypeOrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TypeTravelOrder">
+            <EntityTypeMapping TypeName="VehicleManagementModel.TypeTravelOrder">
+              <MappingFragment StoreEntitySet="TypeTravelOrder">
+                <ScalarProperty Name="IDTypeTravelOrder" ColumnName="IDTypeTravelOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vehicle">
+            <EntityTypeMapping TypeName="VehicleManagementModel.Vehicle">
+              <MappingFragment StoreEntitySet="Vehicle">
+                <ScalarProperty Name="IDVehicle" ColumnName="IDVehicle" />
+                <ScalarProperty Name="TypeVehicle" ColumnName="TypeVehicle" />
+                <ScalarProperty Name="MarkVehicle" ColumnName="MarkVehicle" />
+                <ScalarProperty Name="YearProduction" ColumnName="YearProduction" />
+                <ScalarProperty Name="InitialMomentOfKM" ColumnName="InitialMomentOfKM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="DeleteDriver" FunctionName="VehicleManagementModel.Store.DeleteDriver" />
+          <FunctionImportMapping FunctionImportName="DeleteServicesVehicle" FunctionName="VehicleManagementModel.Store.DeleteServicesVehicle" />
+          <FunctionImportMapping FunctionImportName="DeleteTravelOrder" FunctionName="VehicleManagementModel.Store.DeleteTravelOrder" />
+          <FunctionImportMapping FunctionImportName="DeleteVehicle" FunctionName="VehicleManagementModel.Store.DeleteVehicle" />
+          <FunctionImportMapping FunctionImportName="GetDetailsTravelOrder" FunctionName="VehicleManagementModel.Store.GetDetailsTravelOrder">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetDetailsTravelOrder_Result">
+                <ScalarProperty Name="IDTravelOrder" ColumnName="IDTravelOrder" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="StartPlace" ColumnName="StartPlace" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="NameOrder" ColumnName="NameOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="DriversLicenseNumber" ColumnName="DriversLicenseNumber" />
+                <ScalarProperty Name="TypeVehicle" ColumnName="TypeVehicle" />
+                <ScalarProperty Name="MarkVehicle" ColumnName="MarkVehicle" />
+                <ScalarProperty Name="YearProduction" ColumnName="YearProduction" />
+                <ScalarProperty Name="InitialMomentOfKM" ColumnName="InitialMomentOfKM" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetDriver" FunctionName="VehicleManagementModel.Store.GetDriver">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetDriver_Result">
+                <ScalarProperty Name="IDDriver" ColumnName="IDDriver" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="DriversLicenseNumber" ColumnName="DriversLicenseNumber" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetDrivers" FunctionName="VehicleManagementModel.Store.GetDrivers">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetDrivers_Result">
+                <ScalarProperty Name="IDDriver" ColumnName="IDDriver" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="DriversLicenseNumber" ColumnName="DriversLicenseNumber" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetService" FunctionName="VehicleManagementModel.Store.GetService">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetService_Result">
+                <ScalarProperty Name="IDServiceVehicle" ColumnName="IDServiceVehicle" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="ChangeTire" ColumnName="ChangeTire" />
+                <ScalarProperty Name="ChangeBelt" ColumnName="ChangeBelt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetServiceForVehicle" FunctionName="VehicleManagementModel.Store.GetServiceForVehicle">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetServiceForVehicle_Result">
+                <ScalarProperty Name="IDServiceVehicle" ColumnName="IDServiceVehicle" />
+                <ScalarProperty Name="MarkVehicle" ColumnName="MarkVehicle" />
+                <ScalarProperty Name="TypeVehicle" ColumnName="TypeVehicle" />
+                <ScalarProperty Name="ChangeTire" ColumnName="ChangeTire" />
+                <ScalarProperty Name="ChangeBelt" ColumnName="ChangeBelt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetServicesVehicle" FunctionName="VehicleManagementModel.Store.GetServicesVehicle">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetServicesVehicle_Result">
+                <ScalarProperty Name="IDServiceVehicle" ColumnName="IDServiceVehicle" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="MarkVehicle" ColumnName="MarkVehicle" />
+                <ScalarProperty Name="TypeVehicle" ColumnName="TypeVehicle" />
+                <ScalarProperty Name="ChangeTire" ColumnName="ChangeTire" />
+                <ScalarProperty Name="ChangeBelt" ColumnName="ChangeBelt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetStavka" FunctionName="VehicleManagementModel.Store.GetStavka">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetStavka_Result">
+                <ScalarProperty Name="IDStavka" ColumnName="IDStavka" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="MarkVehicle" ColumnName="MarkVehicle" />
+                <ScalarProperty Name="TypeVehicle" ColumnName="TypeVehicle" />
+                <ScalarProperty Name="IDServiceVehicle" ColumnName="IDServiceVehicle" />
+                <ScalarProperty Name="ChangeTire" ColumnName="ChangeTire" />
+                <ScalarProperty Name="ChangeBelt" ColumnName="ChangeBelt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTravelOrder" FunctionName="VehicleManagementModel.Store.GetTravelOrder">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetTravelOrder_Result">
+                <ScalarProperty Name="IDTravelOrder" ColumnName="IDTravelOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="TypeVehicle" ColumnName="TypeVehicle" />
+                <ScalarProperty Name="StartPlace" ColumnName="StartPlace" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="Name_type" ColumnName="Name type" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTravelOrders" FunctionName="VehicleManagementModel.Store.GetTravelOrders">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetTravelOrders_Result">
+                <ScalarProperty Name="IDTravelOrder" ColumnName="IDTravelOrder" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="StartPlace" ColumnName="StartPlace" />
+                <ScalarProperty Name="Destination" ColumnName="Destination" />
+                <ScalarProperty Name="DateStart" ColumnName="DateStart" />
+                <ScalarProperty Name="DateEnd" ColumnName="DateEnd" />
+                <ScalarProperty Name="TypeOrderID" ColumnName="TypeOrderID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetTypes" FunctionName="VehicleManagementModel.Store.GetTypes">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetTypes_Result">
+                <ScalarProperty Name="IDTypeTravelOrder" ColumnName="IDTypeTravelOrder" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetVehicle" FunctionName="VehicleManagementModel.Store.GetVehicle">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetVehicle_Result">
+                <ScalarProperty Name="IDVehicle" ColumnName="IDVehicle" />
+                <ScalarProperty Name="TypeVehicle" ColumnName="TypeVehicle" />
+                <ScalarProperty Name="MarkVehicle" ColumnName="MarkVehicle" />
+                <ScalarProperty Name="YearProduction" ColumnName="YearProduction" />
+                <ScalarProperty Name="InitialMomentOfKM" ColumnName="InitialMomentOfKM" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetVehicles" FunctionName="VehicleManagementModel.Store.GetVehicles">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="VehicleManagementModel.GetVehicles_Result">
+                <ScalarProperty Name="IDVehicle" ColumnName="IDVehicle" />
+                <ScalarProperty Name="TypeVehicle" ColumnName="TypeVehicle" />
+                <ScalarProperty Name="MarkVehicle" ColumnName="MarkVehicle" />
+                <ScalarProperty Name="YearProduction" ColumnName="YearProduction" />
+                <ScalarProperty Name="InitialMomentOfKM" ColumnName="InitialMomentOfKM" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="InsertDriver" FunctionName="VehicleManagementModel.Store.InsertDriver" />
+          <FunctionImportMapping FunctionImportName="InsertServiceVehicle" FunctionName="VehicleManagementModel.Store.InsertServiceVehicle" />
+          <FunctionImportMapping FunctionImportName="InsertTravelOrder" FunctionName="VehicleManagementModel.Store.InsertTravelOrder" />
+          <FunctionImportMapping FunctionImportName="InsertVehicle" FunctionName="VehicleManagementModel.Store.InsertVehicle" />
+          <FunctionImportMapping FunctionImportName="UpdateDriver" FunctionName="VehicleManagementModel.Store.UpdateDriver" />
+          <FunctionImportMapping FunctionImportName="UpdateServicesVehicle" FunctionName="VehicleManagementModel.Store.UpdateServicesVehicle" />
+          <FunctionImportMapping FunctionImportName="UpdateTravelOrder" FunctionName="VehicleManagementModel.Store.UpdateTravelOrder" />
+          <FunctionImportMapping FunctionImportName="UpdateVehicle" FunctionName="VehicleManagementModel.Store.UpdateVehicle" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
